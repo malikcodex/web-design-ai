@@ -491,18 +491,21 @@ window.addEventListener("load" , initSlider);
     const slidesDown = (e) => {
         isDrag = true;
         content_vid.classList.remove('dragging');
-        startX = e.pageX;
+        startX = e.pageX || e.touches && e.touches[0] ? e.touches[0].pageX : null;
         prevScrollLeft = content_vid.scrollLeft;
 
         document.addEventListener("mousemove" , slidesMove);
         document.addEventListener("mouseup" , slidesUp);
         content_vid.addEventListener("mouseleave" , slidesUp);
+        document.addEventListener("touchmove" , slidesMove);
+        document.addEventListener("touchend" , slidesUp);
+        content_vid.addEventListener("touchleave" , slidesUp);
     }
 
     const slidesMove = (e) => {
         if(!isDrag) return;
         content_vid.classList.add('dragging');
-        let positionDifference = e.pageX - startX;
+        let positionDifference = (e.pageX || e.touches && e.touches[0] ? e.touches[0].pageX : null) - startX;
         content_vid.scrollLeft = prevScrollLeft - positionDifference;
         console.log(positionDifference)
     }
@@ -513,7 +516,11 @@ window.addEventListener("load" , initSlider);
         document.removeEventListener("mousemove" , slidesMove);
         document.removeEventListener("mouseup" , slidesUp);
         content_vid.removeEventListener("mouseleave" , slidesUp);
+        document.addEventListener("touchmove" , slidesMove);
+        document.addEventListener("touchend" , slidesUp);
+        content_vid.addEventListener("touchleave" , slidesUp);
     }
 
     content_vid.addEventListener("mousedown" , slidesDown);
+    content_vid.addEventListener("touchstart" , slidesDown);
 </script>
