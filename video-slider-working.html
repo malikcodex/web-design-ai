@@ -491,7 +491,8 @@ window.addEventListener("load" , initSlider);
     const slidesDown = (e) => {
         isDrag = true;
         content_vid.classList.remove('dragging');
-        startX = e.pageX || e.touches && e.touches[0] ? e.touches[0].pageX : null;
+        let touchs = e.touches && e.touches[0] ? e.touches[0].pageX : null
+        startX = (e.pageX || touchs);
         prevScrollLeft = content_vid.scrollLeft;
 
         document.addEventListener("mousemove" , slidesMove);
@@ -505,7 +506,8 @@ window.addEventListener("load" , initSlider);
     const slidesMove = (e) => {
         if(!isDrag) return;
         content_vid.classList.add('dragging');
-        let positionDifference = (e.pageX || e.touches && e.touches[0] ? e.touches[0].pageX : null) - startX;
+        let touchs = e.touches && e.touches[0] ? e.touches[0].pageX : null
+        let positionDifference = (e.pageX || touchs) - startX;
         content_vid.scrollLeft = prevScrollLeft - positionDifference;
         console.log(positionDifference)
     }
